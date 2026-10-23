@@ -61,6 +61,7 @@
     "@faker-js/faker": "6.1.2",
     "@percy/cli": "^1.27.4",
     "@percy/cypress": "^3.1.8",
+    "@playwright/test": "^1.64.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/bcryptjs": "2.4.2",
@@ -191,7 +192,10 @@
     "build": "vite build",
     "codesandbox:start:api": "yarn tsnode:not-instrumented --files backend/app.ts",
     "codesandbox:start": "NODE_ENV=development TSC_COMPILE_ON_ERROR=true concurrently \"vite\" yarn:start:api:codesandbox",
-    "postinstall": "husky install && patch-package"
+    "postinstall": "husky install && patch-package",
+    "test:pw": "playwright test",
+    "test:pw:ui": "playwright test --ui",
+    "test:pw:report": "playwright show-report"
   },
   "engines": {
     "node": "^22.0.0 || ^24.0.0"
