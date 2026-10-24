@@ -1,17 +1,18 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Playwright configuration for the Cypress Real World App (RWA).
+ * Configuración de Playwright para Cypress Real World App (RWA).
  * Taller Investigativo – Tercer Corte (Pruebas y Calidad de Software, Universidad ECCI).
  *
- * See https://playwright.dev/docs/test-configuration.
+ * Ver https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
   testDir: "./playwright-tests",
 
   /*
-   * Every test re-seeds the shared RWA database (POST /testData/seed), so the
-   * tests must run one at a time to avoid interfering with each other.
+   * Cada test vuelve a sembrar la base de datos compartida de RWA
+   * (POST /testData/seed), así que los tests deben correr de uno en uno para
+   * no interferir entre sí.
    */
   fullyParallel: false,
   workers: 1,
@@ -22,17 +23,17 @@ export default defineConfig({
   reporter: [["list"], ["html", { open: "never" }]],
 
   use: {
-    /* Lets tests call page.goto("/signin") instead of the full URL. */
+    /* Permite escribir page.goto("/signin") en lugar de la URL completa. */
     baseURL: "http://localhost:3000",
 
     /*
-     * RWA marks its elements with `data-test` instead of Playwright's default
-     * `data-testid`, so getByTestId() must look at that attribute.
+     * RWA marca sus elementos con `data-test` y no con `data-testid` (el que
+     * Playwright usa por defecto), así que getByTestId() debe buscar ese atributo.
      * https://playwright.dev/docs/locators#set-a-custom-test-id-attribute
      */
     testIdAttribute: "data-test",
 
-    /* EVIDENCE=1 keeps a screenshot of every test for the report. */
+    /* Con EVIDENCE=1 se guarda una captura de cada test para el informe. */
     screenshot: process.env.EVIDENCE ? "on" : "only-on-failure",
     trace: "retain-on-failure",
   },
@@ -44,7 +45,7 @@ export default defineConfig({
     },
   ],
 
-  /* Starts RWA (frontend :3000 + API :3001) if it is not already running. */
+  /* Levanta RWA (frontend :3000 + API :3001) si no está corriendo ya. */
   webServer: {
     command: "yarn dev",
     url: "http://localhost:3000",

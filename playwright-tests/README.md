@@ -1,27 +1,29 @@
-# Playwright tests – Taller Investigativo Tercer Corte
+# Pruebas con Playwright – Taller Investigativo Tercer Corte
 
-Pruebas y Calidad de Software – Universidad ECCI. Playwright suite for the Cypress Real World App.
+Pruebas y Calidad de Software – Universidad ECCI. Suite de Playwright sobre Cypress Real World App (RWA).
 
-| File | Module |
+**Autores:** Johan Alejandro Gonzalez Cortes y Miguel Angel Reyes.
+
+| Archivo | Módulo |
 | --- | --- |
-| `01-locators.spec.ts` | 1 – Locators |
-| `02-actions.spec.ts` | 2 – Actions |
-| `03-assertions.spec.ts` | 3 – Assertions |
-| `04-decision-table.spec.ts` | 4 – Decision table (sign-in rule, parameterized) |
-| `05-state-transition.spec.ts` | 5 – State transition (money request lifecycle) |
-| `support/helpers.ts` | Shared helpers: database re-seed, sign in/out, seed users |
+| `01-locators.spec.ts` | 1 – Localizadores |
+| `02-actions.spec.ts` | 2 – Acciones |
+| `03-assertions.spec.ts` | 3 – Aserciones |
+| `04-decision-table.spec.ts` | 4 – Tabla de decisión (regla de inicio de sesión, parametrizada) |
+| `05-state-transition.spec.ts` | 5 – Transición de estados (ciclo de vida de una solicitud de dinero) |
+| `support/helpers.ts` | Utilidades compartidas: re-sembrar la base de datos, iniciar/cerrar sesión, usuarios semilla |
 
-## Run
+## Cómo ejecutar
 
 ```bash
 yarn install
 npx playwright install chromium
-yarn test:pw          # starts RWA (yarn dev) automatically if it is not running
+yarn test:pw          # levanta RWA (yarn dev) automáticamente si no está corriendo
 yarn test:pw:ui       # UI Mode
-yarn test:pw:report   # HTML report
+yarn test:pw:report   # reporte HTML
 ```
 
-Every test re-seeds the database through `POST /testData/seed`, so the suite runs with one worker.
+Cada test vuelve a sembrar la base de datos con `POST /testData/seed`, por eso la suite corre con un solo worker.
 
-`TC-ST-03` and `TC-ST-04` are marked with `test.fail()`: they document two defects in the RWA backend
-(a rejected request can still be accepted through the API, and rejecting a request still moves money).
+`TC-ST-03` y `TC-ST-04` están marcados con `test.fail()`: documentan dos defectos del backend de RWA
+(una solicitud rechazada todavía se puede aceptar por la API, y rechazar una solicitud igual mueve el dinero).

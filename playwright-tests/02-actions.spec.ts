@@ -2,11 +2,11 @@ import { test } from "@playwright/test";
 import { reseed, USERS, PASSWORD } from "./support/helpers";
 
 /**
- * MODULE 2 – ACTIONS
- * Short flow: sign in and send a $25 payment to another user.
- * Actions used: fill(), check(), press(), click(), hover() and pressSequentially().
+ * MÓDULO 2 – ACCIONES (ACTIONS)
+ * Flujo corto: iniciar sesión y enviar un pago de $25 a otro usuario.
+ * Acciones usadas: fill(), check(), press(), click(), hover() y pressSequentially().
  *
- * Module 3 (03-assertions.spec.ts) takes this same flow and adds assertions.
+ * El módulo 3 (03-assertions.spec.ts) toma este mismo flujo y le agrega aserciones.
  */
 test.describe("Module 2 - Actions", () => {
   test.beforeEach(async ({ request }) => {
@@ -16,38 +16,38 @@ test.describe("Module 2 - Actions", () => {
   test("sign in and send a payment", async ({ page }) => {
     await page.goto("/signin");
 
-    // fill(): sets the whole value at once. Right for plain text fields – the
-    // sign-in form only validates the final value, not each keystroke.
+    // fill(): asigna el valor completo de una vez. Es lo correcto para campos de
+    // texto simples: el formulario de login solo valida el valor final, no cada tecla.
     await page.getByLabel("Username").fill(USERS.ted.username);
     await page.getByLabel("Password").fill(PASSWORD);
 
-    // check(): idempotent – it only clicks if the box is not already checked and
-    // then verifies it really became checked.
+    // check(): es idempotente – solo hace clic si la casilla no está marcada y
+    // luego verifica que de verdad quedó marcada.
     await page.getByRole("checkbox", { name: "Remember me" }).check();
 
-    // press(): submits the form with the keyboard, as many users do.
+    // press(): envía el formulario con el teclado, como hacen muchos usuarios.
     await page.getByLabel("Password").press("Enter");
 
-    // hover() + click(): open the "New" transaction screen.
+    // hover() + click(): abre la pantalla de nueva transacción.
     const newButton = page.getByRole("link", { name: "New" });
     await newButton.hover();
     await newButton.click();
 
-    // pressSequentially(): the user search box fires a server search on every
-    // keystroke (onChange). Typing key by key reproduces that real behaviour.
-    // fill() would also work here, but this field is the one place in the flow
-    // where per-key events are part of the behaviour under test.
+    // pressSequentially(): el buscador de usuarios lanza una búsqueda al servidor
+    // en cada tecla (onChange). Escribir tecla por tecla reproduce ese
+    // comportamiento real. fill() también funcionaría, pero este campo es el
+    // único del flujo donde los eventos por tecla son parte de lo que se prueba.
     await page.getByPlaceholder("Search...").pressSequentially("Kristian", { delay: 50 });
     await page.getByText(USERS.kristian.fullName).click();
 
-    // fill() on the amount field: it has a currency mask ("$" + thousands
-    // separator), but the mask reacts to the final input value, so fill() is
-    // enough and faster than typing character by character.
+    // fill() en el campo de monto: tiene una máscara de moneda ("$" y separador
+    // de miles), pero la máscara reacciona al valor final, así que fill() basta y
+    // es más rápido que escribir carácter por carácter.
     await page.getByPlaceholder("Amount").fill("25");
     await page.getByPlaceholder("Add a note").fill("Pizza night");
 
-    // click(): Playwright first waits until the button is visible, stable,
-    // enabled and able to receive events (actionability checks).
+    // click(): antes, Playwright espera a que el botón esté visible, estable,
+    // habilitado y pueda recibir eventos (comprobaciones de actionability).
     await page.getByRole("button", { name: "Pay" }).click();
 
     await page.getByRole("link", { name: "Return To Transactions" }).click();
